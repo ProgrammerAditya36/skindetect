@@ -3,8 +3,8 @@ import numpy as np
 from django.conf import settings
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing import image
+from tensorflow.keras.models import load_model # type: ignore
+from tensorflow.keras.preprocessing import image # type: ignore
 
 # Load the Keras model
 model_path = os.path.join(settings.BASE_DIR, 'model_checkpoint.weights.keras')
