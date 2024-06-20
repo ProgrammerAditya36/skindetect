@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Upload Image</title>
-</head>
-<body>
+  </head>
+  <body>
     <h2>Upload Image for Prediction</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="file" name="image" accept="image/*">
-        <button type="submit">Upload</button>
+    <form
+      method="post"
+      enctype="multipart/form-data"
+      action="{% url 'predict_image' %}"
+    >
+      {% csrf_token %}
+      <input type="file" name="image" accept="image/*" />
+      <button type="submit">Upload</button>
     </form>
-</body>
+
+    {% if result %}
+    <h3>Prediction Result:</h3>
+    <p>{{ result }}</p>
+    {% endif %}
+  </body>
 </html>

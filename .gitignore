@@ -1,3 +1,6 @@
 model_checkpoint.weights.keras
 images.jpeg
 code.txt
+media/
+db.sqlite3
+__pycache__/
