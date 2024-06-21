@@ -3,11 +3,10 @@ import numpy as np
 from django.conf import settings
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from tensorflow.keras.models import load_model # type: ignore
 from tensorflow.keras.preprocessing import image # type: ignore
-
-# Load the Keras model
-model_path = os.path.join(settings.BASE_DIR, 'model_checkpoint.weights.keras')
+import requests
+import json
+url = "http://localhost:5000/predict/"
 
 
 @csrf_exempt
@@ -28,14 +27,10 @@ def predict_image(request):
         img_array = np.expand_dims(img_array, axis=0)
         img_array /= 255.0
         # Make prediction
-        model = load_model(model_path)
-        predictions = model.predict(img_array)
-        class_names = ['Actinic keratoses', 'Basal cell carcinoma', 'Benign keratosis-like lesions', 'Dermatofibroma', 'Melanoma', 'Melanocytic nevi', 'Vascular lesions']
-        predicted_class_index = np.argmax(predictions[0])
-        predicted_class_name = class_names[predicted_class_index]
-        result = f'Predicted class: {predicted_class_name} with probability {predictions[0][predicted_class_index]:.4f}'
+        input_json = json.dumps({"data": img_array.tolist()})
+        response = requests.post(url, data=input_json)
         
         # Convert img_path to string for template rendering
-        context['result'] = result
+        context['result'] = response.json()
 
     return render(request, 'app/upload.html', context)
