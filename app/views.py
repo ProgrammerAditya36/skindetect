@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from tensorflow.keras.preprocessing import image # type: ignore
 import requests
 import json
-url = "http://localhost:5000/predict/"
+url = "https://skin-detect-api.onrender.com/predict/"
 
 
 @csrf_exempt
