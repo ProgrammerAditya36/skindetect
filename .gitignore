@@ -1,7 +1,10 @@
 model_checkpoint.weights.keras
+venv/
 images.jpeg
 code.txt
 media/
 db.sqlite3
 __pycache__/
 *.pyc
+skindetect/__pycache__/
+app/__pycache__/
