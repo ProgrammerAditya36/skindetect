@@ -34,3 +34,7 @@ def predict_image(request):
         context['result'] = response.json()
 
     return render(request, 'app/upload.html', context)
+
+
+def home(request):
+    return render(request, "app/base.html")
