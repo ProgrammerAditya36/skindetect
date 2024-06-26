@@ -1,23 +1,25 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Upload Image</title>
-  </head>
-  <body>
-    <h2>Upload Image for Prediction</h2>
-    <form
-      method="post"
-      enctype="multipart/form-data"
-      action="{% url 'predict_image' %}"
-    >
-      {% csrf_token %}
-      <input type="file" name="image" accept="image/*" />
-      <button type="submit">Upload</button>
-    </form>
+{% extends "app/base.html" %} {% block content %}
+<h2>Upload Image for Prediction</h2>
 
-    {% if result %}
-    <h3>Prediction Result:</h3>
-    <p>{{ result }}</p>
-    {% endif %}
-  </body>
-</html>
+<form
+  method="post"
+  enctype="multipart/form-data"
+  action="{% url 'upload' %}"
+  id="upload-form"
+>
+  {% csrf_token %}
+
+  <div class="profile-picture" id="profile-picture">
+    <h1 class="upload-icon">
+      <i class="fa fa-upload" aria-hidden="true"></i>
+    </h1>
+    <h2 class="upload-text">Click to Upload image</h2>
+    <input class="file-uploader" type="file" accept="image/*" name="image" />
+
+    
+  </div>
+  <button type="submit">Upload</button>
+</form>
+
+
+{% endblock %}

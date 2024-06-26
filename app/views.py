@@ -2,14 +2,13 @@ import os
 import numpy as np
 from django.conf import settings
 from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
 from tensorflow.keras.preprocessing import image # type: ignore
 import requests
 import json
-url = "https://skin-detect-api.onrender.com/predict/"
 
+# Assuming your API endpoint for prediction
+url = "http://127.0.0.1:5000/predict"
 
-@csrf_exempt
 def predict_image(request):
     context = {}
     if request.method == 'POST' and request.FILES.get('image'):
@@ -22,19 +21,23 @@ def predict_image(request):
                 destination.write(chunk)
         
         # Prepare the image for prediction
-        img = image.load_img(img_path, target_size=(224, 224))  # Adjust target_size based on your model
-        img_array = image.img_to_array(img)
+        img_modified = image.load_img(img_path, target_size=(224, 224))  # Adjust target_size based on your model
+        img_array = image.img_to_array(img_modified)
         img_array = np.expand_dims(img_array, axis=0)
         img_array /= 255.0
+
         # Make prediction
         input_json = json.dumps({"data": img_array.tolist()})
-        response = requests.post(url, data=input_json)
-        
-        # Convert img_path to string for template rendering
-        context['result'] = response.json()
+        response = requests.post(url, data=input_json)        
 
-    return render(request, 'app/upload.html', context)
+        # Assuming the API returns JSON response with predictions
+        context['result'] = response.json()
+        context['img_path'] = os.path.join(settings.MEDIA_URL, img.name)  # Correcting img_path to use MEDIA_URL
+        
+        return render(request, 'app/result.html', context)
+
+    return render(request, 'app/upload.html')
 
 
 def home(request):
-    return render(request, "app/base.html")
+    return render(request, "app/index.html")

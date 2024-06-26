@@ -12,69 +12,28 @@
     <header class="bg-white border-bottom">
         <div class="container d-flex justify-content-between align-items-center py-3">
             <div class="logo d-flex align-items-center">
-                <img src="path_to_logo.png" alt="Skin Detect Logo" height="50">
-                <div class="ms-2">
-                    <h1 class="h4 mb-0">Skin Detect</h1>
-                    <p class="mb-0 text-muted small">SNAP, DETECT, PROTECT</p>
-                </div>
+                <img src="{% static 'images/logo.png' %}" alt="Skin Detect Logo" height="50">
+                
             </div>
             <nav>
                 <ul class="nav">
                     <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
                     <li class="nav-item"><a href="#" class="nav-link">About Us</a></li>
                     <li class="nav-item"><a href="#" class="nav-link">Contact Us</a></li>
+                    <li class="nav-item"><a href="{% url 'upload'  %}" class="nav-link">Upload</a></li>
+
                 </ul>
             </nav>
         </div>
     </header>
     
     <main class="container my-5">
-        <section class="upload text-center mb-5">
-            <h2 class="mb-3">Drop down the image of the skin affected</h2>
-            <div class="drop-area border border-3 border-dashed p-5">
-                <p class="text-muted">Choose a file or drag here</p>
-            </div>
-        </section>
+        {% block content %}{% endblock %}
 
-        <section class="result text-center mb-5">
-            <h2 class="mb-3">From this image, you might have got</h2>
-            <img src="path_to_image.png" alt="Skin condition image" class="img-fluid mb-3">
-            <p class="h5">Chicken pox</p>
-        </section>
-
-        <section class="info mb-5">
-            <h2 class="mb-4">What is Chickenpox?</h2>
-            <h3>Symptoms:</h3>
-            <ul>
-                <li>Rash: The most recognizable symptom...</li>
-                <li>Fever: A mild to moderate fever often accompanies...</li>
-                <li>Fatigue and Weakness: You may feel tired...</li>
-                <li>Loss of Appetite: Reduced desire to eat...</li>
-                <li>Headache and Sore Throat: Some people experience...</li>
-            </ul>
-            <h3>Transmission:</h3>
-            <p>Chickenpox spreads through direct contact...</p>
-            <h3>Treatment and Care:</h3>
-            <ul>
-                <li>Rest and Hydration: Ensure you get plenty of rest...</li>
-                <li>Antihistamines: Over-the-counter antihistamines...</li>
-                <li>Calamine Lotion and Oatmeal Baths: Applying calamine...</li>
-                <li>Fever Reducers: Acetaminophen (Tylenol) can help reduce fever...</li>
-                <li>Antiviral Medications: In some cases, especially for adults...</li>
-                <li>Prevent Scratching: Keep fingernails trimmed...</li>
-                <li>Isolation: To prevent spreading the virus...</li>
-            </ul>
-            <h3>Vaccination:</h3>
-            <p>Prevention is key. The varicella vaccine...</p>
-        </section>
-
-        <section class="emergency text-center">
-            <h2>Not sure?</h2>
-            <p>Contact your local doctor.</p>
-            <a href="tel:emergency-number" class="btn btn-danger">Emergency call</a>
-        </section>
+        
     </main>
     
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://use.fontawesome.com/fe459689b4.js"></script>
 </body>
 </html>
