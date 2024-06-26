@@ -10,16 +10,49 @@
   {% csrf_token %}
 
   <div class="profile-picture" id="profile-picture">
-    <h1 class="upload-icon">
+    <h1 class="upload-icon" id="upload-icon">
       <i class="fa fa-upload" aria-hidden="true"></i>
     </h1>
-    <h2 class="upload-text">Click to Upload image</h2>
-    <input class="file-uploader" type="file" accept="image/*" name="image" />
-
+    <img id="image-preview" src="" alt="Image Preview" class="img-fluid res-img-large remove-display"/>
+    <h2 class="upload-text" id="upload-text">Click to Upload image</h2>
+    <p id="file-name"></p>
     
+    <input class="file-uploader" type="file" accept="image/*" name="image" onchange="previewFile()" />
   </div>
-  <button type="submit">Upload</button>
+
+  
+
+  <div class="d-grid gap-2 my-3">
+    <button class="btn btn-primary upload-btn disabled" type="submit">Upload</button>
+  </div>
 </form>
 
+<script>
+function previewFile() {
+    const preview = document.getElementById('image-preview');
+    preview.classList.remove('remove-display');
+    const fileName = document.getElementById('file-name');
+    const file = document.querySelector('.file-uploader').files[0];
+    const reader = new FileReader();
+    
+    const uploadBtn = document.querySelector('.upload-btn');
+    uploadBtn.classList.remove('disabled');
 
+    const uploadIcon = document.getElementById('upload-icon');
+    uploadIcon.classList.add('remove-display');
+
+    const uploadText = document.getElementById('upload-text');
+    uploadText.innerText = "Click to Change image"
+
+    fileName.textContent = `File name: ${file.name}`;
+  
+    reader.addEventListener('load', () => {
+      preview.src = reader.result;
+    }, false);
+  
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+}
+</script>
 {% endblock %}

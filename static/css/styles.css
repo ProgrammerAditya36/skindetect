@@ -151,3 +151,19 @@ main {
   border: 4px solid var(--border);
   flex-direction: column;
 }
+
+.res-img{
+  max-width: 200px;
+}
+
+.res-img-large{
+  max-width: 500px;
+}
+
+.upload-btn{
+  border-radius: 30px;
+}
+
+.remove-display{
+  display: none;
+}

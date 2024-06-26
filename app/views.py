@@ -42,7 +42,7 @@ def predict_image(request):
                     result = response.json(); 
                     context['result'] = result['result']
                     context['img_path'] = os.path.join(settings.MEDIA_URL, img.name)
-                    context['probaility'] = result['probability']
+                    context['probability'] = result['probability']
                 except json.JSONDecodeError as e:
                     print(f"Error decoding JSON: {e}")
                     context['error'] = "Error decoding JSON response from the server."
