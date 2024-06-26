@@ -1,8 +1,15 @@
-{% extends "app/base.html" %} {% block content %} {% if result %}
+{% extends "app/base.html" %} {% block content %}
+{% if error %}
+<div class="container my-5 box">
+  <h3>Error:</h3>
+  <p>{{ error }}</p>
+</div>
+{%else%}
+ {% if result %}
 
 <div class="container my-5 box">
   <h3>Prediction Result:</h3>
-  <p>{{ result }}</p>
+  
   <section class="result text-center mb-5">
     <h2 class="mb-3">From this image, you might have got</h2>
     <img
@@ -11,7 +18,7 @@
       alt="Skin condition image"
       class="img-fluid mb-3"
     />
-    <p class="h5">Chicken pox</p>
+    <p class="h5">{{result}}</p>
   </section>
 
   <section class="info mb-5">
@@ -50,5 +57,5 @@
     <a href="tel:emergency-number" class="btn btn-danger">Emergency call</a>
   </section>
 </div>
-
+{% endif %}
 {% endblock %}
