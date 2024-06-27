@@ -5,8 +5,10 @@
   --border: #8d8d8d;
   --text: #000000;
 }
+*{
+  font-family: "Inria Sans", sans-serif;
+}
 body {
-  font-family: Arial, sans-serif;
   background-color: var(--primary);
 }
 
@@ -22,7 +24,7 @@ header .logo h1 {
   margin: 0;
 }
 
-header .nav-link {
+.nav-link {
   font-weight: bold;
   color: #333;
 }
@@ -153,11 +155,11 @@ main {
 }
 
 .res-img{
-  max-width: 200px;
+  max-width: 15rem;
 }
 
 .res-img-large{
-  max-width: 500px;
+  max-width: 10rem;
 }
 
 .upload-btn{
@@ -166,4 +168,7 @@ main {
 
 .remove-display{
   display: none;
+}
+.align-left{
+  flex-direction: row-reverse;
 }
