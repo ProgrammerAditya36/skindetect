@@ -1,58 +1,102 @@
 {% extends "app/base.html" %} {% block content %}
-<h2>Upload Image for Prediction</h2>
+<div class="h-screen px-20 py-5">
+    <h2 class="text-2xl font-bold">Upload Image for Prediction</h2>
 
-<form
-  method="post"
-  enctype="multipart/form-data"
-  action="{% url 'upload' %}"
-  id="upload-form"
->
-  {% csrf_token %}
+    <form
+        method="post"
+        enctype="multipart/form-data"
+        action="{% url 'upload' %}"
+        id="upload-form"
+        class="mt-5"
+    >
+        {% csrf_token %}
 
-  <div class="profile-picture" id="profile-picture">
-    <h1 class="upload-icon" id="upload-icon">
-      <i class="fa fa-upload" aria-hidden="true"></i>
-    </h1>
-    <img id="image-preview" src="" alt="Image Preview" class="img-fluid res-img-large remove-display"/>
-    <h2 class="upload-text" id="upload-text">Click to Upload image</h2>
-    <p id="file-name"></p>
-    
-    <input class="file-uploader" type="file" accept="image/*" name="image" onchange="previewFile()" />
-  </div>
+        <div class="mb-5">
+            <label for="model-selection" class="block text-gray-700">Select Model:</label>
+            <select
+                id="model-selection"
+                name="model"
+                class="mt-2 block w-full p-2 border border-gray-300 rounded-md"
+                required
+            >
+                <option value="skin_cancer1.keras">skin_cancer1.keras</option>
+                <option value="skin_disease1.keras">skin_disease1.keras</option>
+                
+                <option value="model_checkpoint.weights.keras">model_checkpoint.weights.keras</option>
+            </select>
+        </div>
 
-  
+        <div
+            class="border border-dashed border-gray-400 p-10 rounded-lg text-center cursor-pointer box upload-box"
+            id="profile-picture"
+            onclick="document.querySelector('.file-uploader').click()"
+        >
+            <h1 class="text-6xl text-gray-400" id="upload-icon">
+                <i class="fa fa-upload" aria-hidden="true"></i>
+            </h1>
+            <img
+                id="image-preview"
+                src=""
+                alt="Image Preview"
+                class="w-full max-w-xs mx-auto hidden"
+            />
+            <h2 class="text-xl mt-5 text-gray-600" id="upload-text">
+                Click to Upload image
+            </h2>
+            <p id="file-name"></p>
 
-  <div class="d-grid gap-2 my-3">
-    <button class="btn btn-primary upload-btn disabled" type="submit">Upload</button>
-  </div>
-</form>
+            <input
+                class="hidden file-uploader"
+                type="file"
+                accept="image/*"
+                name="image"
+                onchange="previewFile()"
+            />
+        </div>
+
+        <div class="mt-5">
+            <button
+                class="w-full py-2 my-2 bg-blue-500 text-white rounded- disabled:opacity-50"
+                type="submit"
+                id="upload-btn"
+                disabled
+            >
+                Upload
+            </button>
+        </div>
+    </form>
+</div>
 
 <script>
-function previewFile() {
-    const preview = document.getElementById('image-preview');
-    preview.classList.remove('remove-display');
-    const fileName = document.getElementById('file-name');
-    const file = document.querySelector('.file-uploader').files[0];
-    const reader = new FileReader();
-    
-    const uploadBtn = document.querySelector('.upload-btn');
-    uploadBtn.classList.remove('disabled');
+    function previewFile() {
+        const preview = document.getElementById("image-preview");
+        preview.classList.remove("hidden");
+        const fileName = document.getElementById("file-name");
+        const file = document.querySelector(".file-uploader").files[0];
+        const reader = new FileReader();
 
-    const uploadIcon = document.getElementById('upload-icon');
-    uploadIcon.classList.add('remove-display');
+        const uploadBtn = document.getElementById("upload-btn");
+        uploadBtn.disabled = false;
 
-    const uploadText = document.getElementById('upload-text');
-    uploadText.innerText = "Click to Change image"
+        const uploadIcon = document.getElementById("upload-icon");
+        uploadIcon.classList.add("hidden");
 
-    fileName.textContent = `File name: ${file.name}`;
-  
-    reader.addEventListener('load', () => {
-      preview.src = reader.result;
-    }, false);
-  
-    if (file) {
-      reader.readAsDataURL(file);
+        const uploadText = document.getElementById("upload-text");
+        uploadText.innerText = "Click to Change image";
+
+        fileName.textContent = `File name: ${file.name}`;
+
+        reader.addEventListener(
+            "load",
+            () => {
+                preview.src = reader.result;
+            },
+            false
+        );
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
     }
-}
 </script>
 {% endblock %}

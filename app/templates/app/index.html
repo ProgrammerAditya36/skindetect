@@ -1,6 +1,122 @@
-{% extends "app/base.html" %}
-{% block content %}
-<div class="container my-5">
-    <h2>Home Page</h2>
+{% extends "app/base.html" %} {% load static %} {% block css %}
+<link
+    href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+    rel="stylesheet"
+/>
+<link href="{% static 'css/index.css' %}" rel="stylesheet" />
+{% endblock css %} {% block content %}
+<div >
+    <div class="flex pt-12 px-6 md:px-20 items-center justify-around bg-hero">
+        <div class="flex flex-col gap-6 md:flex-row md:items-center max-w-8xl">
+            <div class="w-full md:w-1/2 lg:pr-32">
+                <h3
+                    class="mt-6 md:mt-10 text-md lg:text-xl text-center md:text-left text-gray-700 font-light tracking-wider leading-relaxed"
+                >
+                    POWERED BY AI
+                </h3>
+                <h2
+                    class="text-4xl lg:text-5xl text-center md:text-left text-red-900 leading-tight font-medium"
+                >
+                    A click away to solve your SKIN ISSUES!
+                </h2>
+
+                <div
+                    class="mt-10 flex flex-col sm:flex-row justify-center md:justify-start"
+                >
+                    <a
+                        href="{% url 'upload' %}"
+                        class="w-full sm:w-40 px-4 py-3 rounded font-semibold text-center text-md bg-red-500 text-white border-2 border-red-500"
+                    >
+                        Try Now
+                    </a>
+                    <button
+                        class="w-full mt-4 sm:mt-0 sm:ml-4 sm:w-40 px-4 py-3 rounded font-semibold text-md bg-white text-red-500 border-2 border-gray-500"
+                    >
+                        Watch a Demo
+                    </button>
+                </div>
+            </div>
+            <div
+                class="w-full hidden md:w-1/2 md:flex justify-center md:justify-end"
+            >
+                <img src="{% static 'images/nurse.png' %}" />
+            </div>
+        </div>
+    </div>
+
+    <div class="dark:bg-gray pt-20 mb-20" id="pricing">
+        <div class="relative mx-auto px-6 text-center lg:px-8 mb-10">
+            <div class="mx-auto max-w-2xl lg:max-w-4xl">
+                <p
+                    class="mt-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-200"
+                >
+                    Who Are We?
+                </p>
+            </div>
+        </div>
+
+        <div class="">
+            <div class="relative z-10 mx-auto px-6 lg:px-8">
+                <div
+                    class="mx-auto grid max-w-md grid-cols-1 gap-8 lg:max-w-7xl lg:grid-cols-3 lg:gap-8"
+                >
+                    <div
+                        class="flex flex-col rounded-3xl bg-white dark:bg-gray-900 shadow-xl ring-1 ring-black/10"
+                    >
+                        <div class="p-8 sm:p-10">
+                            <div
+                                class="mt-4 flex items-baseline text-3xl text-center tracking-tight text-gray-900 dark:text-gray-200 font-semibold"
+                            >
+                                Helps to detect various skin issues
+                            </div>
+                            <p
+                                class="mt-6 leading-7 text-center text-2xl text-gray-600 dark:text-gray-300"
+                            >
+                                Our software accurately identifies potential
+                                skin diseases or issues you may have.
+                            </p>
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-col rounded-3xl bg-white dark:bg-gray-900 shadow-xl ring-1 ring-black/10"
+                    >
+                        <div class="p-8 sm:p-10">
+                            <div
+                                class="mt-4 flex items-baseline text-3xl text-center tracking-tight text-gray-900 dark:text-gray-200 font-semibold"
+                            >
+                                Helps to give prescriptions
+                            </div>
+                            <p
+                                class="mt-6 text-center text-2xl leading-7 text-gray-600 dark:text-gray-300"
+                            >
+                                Our software provides personalized skincare
+                                precautions tailored to address your specific
+                                skin concerns.
+                            </p>
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-col rounded-3xl bg-white dark:bg-gray-900 shadow-xl ring-1 ring-black/10"
+                    >
+                        <div class="p-8 sm:p-10">
+                            <div
+                                class="mt-4 flex items-baseline text-3xl text-center tracking-tight text-gray-900 dark:text-gray-200 font-semibold"
+                            >
+                                You can do an emergency call
+                            </div>
+                            <p
+                                class="mt-6 text-center text-2xl leading-7 text-gray-600 dark:text-gray-300"
+                            >
+                                In cases of uncertainty, our software can
+                                connect you with the nearest dermatologist for a
+                                check-up
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 {% endblock %}

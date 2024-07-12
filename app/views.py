@@ -12,7 +12,9 @@ url = "http://127.0.0.1:5000/predict"
 def predict_image(request):
     context = {}
     if request.method == 'POST' and request.FILES.get('image'):
-        img = request.FILES['image']    
+        img = request.FILES['image']
+        model_path = request.POST.get('model')  # Get selected model path
+        
         img_path = os.path.join(settings.MEDIA_ROOT, img.name)
         
         # Save the uploaded file to MEDIA_ROOT
@@ -21,7 +23,7 @@ def predict_image(request):
                 destination.write(chunk)
         
         # Prepare the image for prediction
-        img_modified = image.load_img(img_path, target_size=(224, 224)) 
+        img_modified = image.load_img(img_path, target_size=(224, 224))
         img_array = image.img_to_array(img_modified)
         img_array = np.expand_dims(img_array, axis=0)
         img_array /= 255.0
@@ -30,8 +32,10 @@ def predict_image(request):
         img_data_list = img_array.tolist()
         
         # Prepare JSON data for FastAPI POST request
-        input_data = {"data": img_data_list}
-        
+        input_data = {
+            "data": img_data_list,
+            "model_path": model_path  # Include model path in the request
+        }
         
         # Make prediction request to FastAPI endpoint
         try:
@@ -39,7 +43,7 @@ def predict_image(request):
             
             if response.status_code == 200:
                 try:
-                    result = response.json(); 
+                    result = response.json()
                     context['result'] = result['result']
                     context['img_path'] = os.path.join(settings.MEDIA_URL, img.name)
                     context['probability'] = result['probability']
@@ -57,14 +61,11 @@ def predict_image(request):
 
     return render(request, 'app/upload.html')
 
-
 def home(request):
     return render(request, "app/index.html")
 
-
 def about(request):
     return render(request, "app/about.html")
-
 
 def contact(request):
     return render(request, "app/contact.html")

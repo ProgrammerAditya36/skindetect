@@ -152,6 +152,8 @@ main {
   align-items: center; 
   border: 4px solid var(--border);
   flex-direction: column;
+  padding: 30px;
+  margin-bottom: 20px;
 }
 
 .res-img{
@@ -171,4 +173,25 @@ main {
 }
 .align-left{
   flex-direction: row-reverse;
+}
+
+.upload-box{
+  height: 60vh;
+}
+.blob-img{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  border-radius: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  position: relative;
 }
