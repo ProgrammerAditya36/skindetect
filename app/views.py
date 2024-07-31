@@ -12,7 +12,7 @@ import logging
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 logger = logging.getLogger(__name__)
-
+from db_connection import addUser
 
 # Assuming your FastAPI endpoint for prediction
 url = "http://127.0.0.1:5000/predict"
@@ -23,7 +23,7 @@ def register(request):
         email = request.POST.get('email')
         password1 = request.POST.get('password1')
         password2 = request.POST.get('password2')
-        
+        print(request.POST)
         # Check if passwords match
         if password1 != password2:
             return render(request, 'app/register.html', {'error': 'Passwords do not match'})
@@ -35,7 +35,8 @@ def register(request):
         # Create new user
         user = User.objects.create_user(username=email, email=email, password=password1, first_name=first_name, last_name=last_name)
         user.save()
-
+        # Add user to MongoDB
+        addUser(request.POST)
         # Log in the user
         user = authenticate(username=email, password=password1)
         if user is not None:
