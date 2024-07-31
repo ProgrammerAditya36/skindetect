@@ -1,0 +1,40 @@
+{% extends "app/base.html" %}
+{% load static %}
+{% block css %}
+<link
+    href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+    rel="stylesheet"
+/>
+<link href="{% static 'css/index.css' %}" rel="stylesheet" />
+{% endblock css %}
+
+{% block content %}
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+    <div class="w-full max-w-md bg-white dark:bg-gray-900 shadow-md rounded-lg p-8">
+        <h2 class="text-3xl font-semibold text-gray-800 dark:text-gray-200 text-center">Login</h2>
+        <form method="post" class="mt-8 space-y-6">
+            {% csrf_token %}
+            <div class="rounded-md shadow-sm -space-y-px">
+                <div>
+                    <label for="email" class="sr-only">Email address</label>
+                    <input id="email" name="email" type="email" autocomplete="email" required
+                        class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-200 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm"
+                        placeholder="Email address">
+                </div>
+                <div>
+                    <label for="password" class="sr-only">Password</label>
+                    <input id="password" name="password" type="password" autocomplete="current-password" required
+                        class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-200 rounded-b-md focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm"
+                        placeholder="Password">
+                </div>
+            </div>
+            {% if error %}
+            <div class="text-red-500 text-center">{{ error }}</div>
+            {% endif %}
+            <button type="submit" class="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                Login
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
