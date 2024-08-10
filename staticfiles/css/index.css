@@ -1,0 +1,28 @@
+/* custom.css */
+
+.custom-container {
+    margin-top: 5rem; /* Adjust top margin */
+    display: flex;
+    align-items: center; /* Vertically center align items */
+}
+
+.custom-container > div {
+    flex: 1;
+}
+
+.custom-image {
+    max-width: 80%;
+    margin: 0 auto; /* Center image horizontally */
+}
+
+@media (min-width: 768px) {
+    .custom-container {
+        flex-direction: row; /* Row direction on medium screens and up */
+    }
+}
+
+@media (max-width: 767px) {
+    .custom-container {
+        flex-direction: column-reverse; /* Column-reverse direction on small screens */
+    }
+}
