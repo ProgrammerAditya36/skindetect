@@ -1,67 +1,44 @@
-{% extends "app/base.html" %} {% block content %}
+{% extends "app/base.html" %} 
+{% block content %}
 <div class="pt-5 pb-20 px-20">
   {% if error %}
-    <div
-        class=" mx-auto my-10 p-5 bg-red-100 border border-red-400 text-red-700 rounded"
-    >
+    <div class="mx-auto my-10 p-5 bg-red-100 border border-red-400 text-red-700 rounded">
         <h3 class="text-xl font-bold">Error:</h3>
         <p>{{ error }}</p>
     </div>
-    {% else %} {% if result %}
-
-    <div class=" box">
-        <h3 class="text-3xl font-bold">Prediction Result:</h3>
-
-        <h2 class="mb-3">From this image, you might have got</h2>
-        <img
-            src="{{ img_path }}"
-            alt="Skin condition image"
-            class="w-full max-w-xs mx-auto mb-3"
-        />
-        <p class="text-lg font-semibold">
-            {{result}} with a probability {{probability}}
-        </p>
-    </div>
-    <div class=" box p-6 my-3">
-        <h2 class="text-2xl font-bold mb-4">What is {{result}}?</h2>
-        <h3 class="text-lg font-semibold">Symptoms:</h3>
-        <ul class="list-disc list-inside ml-5">
-            <li>Rash: The most recognizable symptom...</li>
-            <li>Fever: A mild to moderate fever often accompanies...</li>
-            <li>Fatigue and Weakness: You may feel tired...</li>
-            <li>Loss of Appetite: Reduced desire to eat...</li>
-            <li>Headache and Sore Throat: Some people experience...</li>
-        </ul>
-        <h3 class="text-lg font-semibold mt-4">Transmission:</h3>
-        <p>Chickenpox spreads through direct contact...</p>
-        <h3 class="text-lg font-semibold mt-4">Treatment and Care:</h3>
-        <ul class="list-disc list-inside ml-5">
-            <li>Rest and Hydration: Ensure you get plenty of rest...</li>
-            <li>Antihistamines: Over-the-counter antihistamines...</li>
-            <li>Calamine Lotion and Oatmeal Baths: Applying calamine...</li>
-            <li>
-                Fever Reducers: Acetaminophen (Tylenol) can help reduce fever...
-            </li>
-            <li>
-                Antiviral Medications: In some cases, especially for adults...
-            </li>
-            <li>Prevent Scratching: Keep fingernails trimmed...</li>
-            <li>Isolation: To prevent spreading the virus...</li>
-        </ul>
-        <h3 class="text-lg font-semibold mt-4">Vaccination:</h3>
-        <p>Prevention is key. The varicella vaccine...</p>
-    </div>
-
+  {% else %}
+    {% if result %}
+      <div class="box">
+          <h3 class="text-3xl font-bold">Prediction Result:</h3>
+          <h2 class="mb-3">From this image, you might have got</h2>
+          <img src="{{ img_path }}" alt="Skin condition image" class="w-full max-w-xs mx-auto mb-3" />
+          <p class="text-lg font-semibold">{{ result }} with a probability {{ probability }}</p>
+      </div>
+      {% if disease %}
+        <div class="box p-6 my-3">
+            <h2 class="text-2xl font-bold mb-4">What is {{ disease.name }}?</h2>
+            <h3 class="text-lg font-semibold">Symptoms:</h3>
+            <ul class="list-disc list-inside ml-5">
+                {% for symptom in disease.symptoms %}
+                  <li>{{ symptom }}</li>
+                {% endfor %}
+            </ul>
+            <h3 class="text-lg font-semibold mt-4">Transmission:</h3>
+            <p>{{ disease.transmission }}</p>
+            <h3 class="text-lg font-semibold mt-4">Treatment and Care:</h3>
+            <ul class="list-disc list-inside ml-5">
+                {% for treatment in disease.treatment %}
+                  <li>{{ treatment }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+      {% endif %}
     {% endif %}
-    <div class=" box p-6 mt-3">
+    <div class="box p-6 mt-3">
         <h2 class="text-xl font-bold mb-4">Not sure?</h2>
         <p>Contact your local doctor.</p>
-        <a
-            href="tel:emergency-number"
-            class="text-center p-2 bg-red-500 text-white rounded-full mt-4"
-            >Emergency call</a
-        >
+        <a href="tel:emergency-number" class="text-center p-2 bg-red-500 text-white rounded-full mt-4">Emergency call</a>
     </div>
-    {% endif %}
+  {% endif %}
 </div>
 {% endblock %}

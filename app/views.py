@@ -1,21 +1,121 @@
 import os
+import json
 import numpy as np
 from django.conf import settings
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CustomUserCreationForm
 from .models import MongoUser
-from tensorflow.keras.preprocessing import image #type: ignore
+from tensorflow.keras.preprocessing import image  # type: ignore
 import requests
-import json
 import logging
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-logger = logging.getLogger(__name__)
 from db_connection import addUser
+
+logger = logging.getLogger(__name__)
 
 # Assuming your FastAPI endpoint for prediction
 url = "http://127.0.0.1:5000/predict"
+
+def predict_image(request):
+    diseases = [
+        {
+            "name": "Actinic keratoses",
+            "symptoms": ["Rough, scaly patch on the skin", "Itching or burning"],
+            "transmission": "Not contagious",
+            "treatment": ["Cryotherapy", "Topical medications", "Photodynamic therapy"]
+        },
+        {
+            "name": "Basal cell carcinoma",
+            "symptoms": ["Pearly or waxy bump", "Flat, flesh-colored or brown scar-like lesion"],
+            "transmission": "Not contagious",
+            "treatment": ["Surgical excision", "Radiation therapy", "Topical treatments"]
+        },
+        {
+            "name": "Benign keratosis-like lesions",
+            "symptoms": ["Waxy, raised, wart-like growths", "Varied colors"],
+            "transmission": "Not contagious",
+            "treatment": ["Cryotherapy", "Curettage", "Laser therapy"]
+        },
+        {
+            "name": "Dermatofibroma",
+            "symptoms": ["Firm, raised nodule", "Varied colors"],
+            "transmission": "Not contagious",
+            "treatment": ["Surgical removal", "Cryotherapy"]
+        },
+        {
+            "name": "Melanoma",
+            "symptoms": ["New, unusual growth or a change in an existing mole", "Asymmetry, irregular border, varied color, diameter > 6mm"],
+            "transmission": "Not contagious",
+            "treatment": ["Surgical removal", "Immunotherapy", "Targeted therapy"]
+        },
+        {
+            "name": "Melanocytic nevi",
+            "symptoms": ["Small, dark skin growths", "Varied colors"],
+            "transmission": "Not contagious",
+            "treatment": ["Usually no treatment needed", "Surgical removal if necessary"]
+        },
+        {
+            "name": "Vascular lesions",
+            "symptoms": ["Red, purple, or blue marks on the skin", "Varied sizes and shapes"],
+            "transmission": "Not contagious",
+            "treatment": ["Laser therapy", "Sclerotherapy"]
+        }
+    ]
+
+    context = {}
+    if request.method == 'POST' and request.FILES.get('image'):
+        img = request.FILES['image']
+        img_path = os.path.join(settings.MEDIA_ROOT, img.name)
+
+        # Save the uploaded file to MEDIA_ROOT
+        with open(img_path, 'wb+') as destination:
+            for chunk in img.chunks():
+                destination.write(chunk)
+
+        # Prepare the image for prediction
+        img_modified = image.load_img(img_path, target_size=(224, 224))
+        img_array = image.img_to_array(img_modified)
+        img_array = np.expand_dims(img_array, axis=0)
+        img_array /= 255.0
+
+        # Convert image data to list for FastAPI request
+        img_data_list = img_array.tolist()
+
+        # Prepare JSON data for FastAPI POST request
+        input_data = {
+            "data": img_data_list,
+        }
+
+        # Make prediction request to FastAPI endpoint
+        try:
+            response = requests.post(url, json=input_data)
+
+            if response.status_code == 200:
+                try:
+                    result = response.json()
+                    detected_disease = result['result']
+                    context['result'] = detected_disease
+                    context['img_path'] = os.path.join(settings.MEDIA_URL, img.name)
+                    context['probability'] = result['probability']
+                    for disease in diseases:
+                        if disease['name'] == detected_disease:
+                            context['disease'] = disease
+                            break
+                    
+                except json.JSONDecodeError as e:
+                    context['error'] = "Error decoding JSON response from the server."
+            else:
+                context['error'] = f"Error making prediction request: {response.status_code}"
+
+        except requests.RequestException as e:
+            context['error'] = f"Error making prediction request: {e}"
+
+        return render(request, 'app/result.html', context)
+
+    return render(request, 'app/upload.html')
+
 def register(request):
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
@@ -64,57 +164,6 @@ def user_login(request):
     
     return render(request, 'app/login.html')
 
-def predict_image(request):
-    context = {}
-    if request.method == 'POST' and request.FILES.get('image'):
-        img = request.FILES['image']
-        model_path = request.POST.get('model')  # Get selected model path
-        
-        img_path = os.path.join(settings.MEDIA_ROOT, img.name)
-        
-        # Save the uploaded file to MEDIA_ROOT
-        with open(img_path, 'wb+') as destination:
-            for chunk in img.chunks():
-                destination.write(chunk)
-        
-        # Prepare the image for prediction
-        img_modified = image.load_img(img_path, target_size=(224, 224))
-        img_array = image.img_to_array(img_modified)
-        img_array = np.expand_dims(img_array, axis=0)
-        img_array /= 255.0
-        
-        # Convert image data to list for FastAPI request
-        img_data_list = img_array.tolist()
-        
-        # Prepare JSON data for FastAPI POST request
-        input_data = {
-            "data": img_data_list,
-            "model_path": model_path  # Include model path in the request
-        }
-        
-        # Make prediction request to FastAPI endpoint
-        try:
-            response = requests.post(url, json=input_data)
-            
-            if response.status_code == 200:
-                try:
-                    result = response.json()
-                    context['result'] = result['result']
-                    context['img_path'] = os.path.join(settings.MEDIA_URL, img.name)
-                    context['probability'] = result['probability']
-                except json.JSONDecodeError as e:
-                    print(f"Error decoding JSON: {e}")
-                    context['error'] = "Error decoding JSON response from the server."
-            else:
-                context['error'] = f"Error making prediction request: {response.status_code}"
-        
-        except requests.RequestException as e:
-            print(f"Request Exception: {e}")
-            context['error'] = f"Error making prediction request: {e}"
-        
-        return render(request, 'app/result.html', context)
-
-    return render(request, 'app/upload.html')
 
 def home(request):
     return render(request, "app/index.html")

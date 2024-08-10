@@ -1,0 +1,44 @@
+[
+    {
+        "name": "Actinic keratoses",
+        "symptoms": ["Rough, scaly patch on the skin", "Itching or burning"],
+        "transmission": "Not contagious",
+        "treatment": ["Cryotherapy", "Topical medications", "Photodynamic therapy"]
+    },
+    {
+        "name": "Basal cell carcinoma",
+        "symptoms": ["Pearly or waxy bump", "Flat, flesh-colored or brown scar-like lesion"],
+        "transmission": "Not contagious",
+        "treatment": ["Surgical excision", "Radiation therapy", "Topical treatments"]
+    },
+    {
+        "name": "Benign keratosis-like lesions",
+        "symptoms": ["Waxy, raised, wart-like growths", "Varied colors"],
+        "transmission": "Not contagious",
+        "treatment": ["Cryotherapy", "Curettage", "Laser therapy"]
+    },
+    {
+        "name": "Dermatofibroma",
+        "symptoms": ["Firm, raised nodule", "Varied colors"],
+        "transmission": "Not contagious",
+        "treatment": ["Surgical removal", "Cryotherapy"]
+    },
+    {
+        "name": "Melanoma",
+        "symptoms": ["New, unusual growth or a change in an existing mole", "Asymmetry, irregular border, varied color, diameter > 6mm"],
+        "transmission": "Not contagious",
+        "treatment": ["Surgical removal", "Immunotherapy", "Targeted therapy"]
+    },
+    {
+        "name": "Melanocytic nevi",
+        "symptoms": ["Small, dark skin growths", "Varied colors"],
+        "transmission": "Not contagious",
+        "treatment": ["Usually no treatment needed", "Surgical removal if necessary"]
+    },
+    {
+        "name": "Vascular lesions",
+        "symptoms": ["Red, purple, or blue marks on the skin", "Varied sizes and shapes"],
+        "transmission": "Not contagious",
+        "treatment": ["Laser therapy", "Sclerotherapy"]
+    }
+]
