@@ -1,4 +1,4 @@
-Django==5.0.6
+Django
 numpy
-Requests==2.32.3
-tensorflow_cpu
+Requests
+tensorflow
