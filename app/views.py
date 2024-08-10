@@ -120,7 +120,37 @@ def home(request):
     return render(request, "app/index.html")
 
 def about(request):
-    return render(request, "app/about.html")
+    user_data = [{
+        "name":"Adityaraj Singha",
+        "img_src":"images/adityaraj.png",
+        "descripttion":"B.Tech Engineer in MIT Manipal",
+        "role":"Software Engineer",
+        "link":"https://www.linkedin.com/in/adityaraj-singha-847b80262/"
+    },{
+        "name":"Neil George",
+        "img_src":"images/neil.png",
+        "descripttion":"B.Tech Engineer in MIT Manipal",
+        "role":"Software Engineer",
+        "link":"https://www.linkedin.com/in/neilgeorge1509/"
+    },{
+        "name":"Sriram Sunderrajan",
+        "img_src":"images/sriram.png",
+        "descripttion":"B.Tech Engineer in MIT Manipal",
+        "role":"Software Engineer",
+        "link":"https://www.linkedin.com/in/sriram-v-25y8/"
+
+    },{
+        "name":"Aditya Kinjawadekar",
+        "img_src":"images/aditya.png",
+        "descripttion":"B.Tech Engineer in MIT Manipal",
+        "role":"Software Engineer",
+        "link":"https://www.linkedin.com/in/adityaamit/"
+    }
+    ]
+    context = {
+        "team_members":user_data
+    }
+    return render(request, "app/about.html", context)
 
 def contact(request):
     return render(request, "app/contact.html")

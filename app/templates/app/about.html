@@ -1,6 +1,38 @@
 {% extends "app/base.html" %}
+{% load static %}
 {% block content %}
-<div class="container my-5">
-    <h2>About Page</h2>
+<div class="container my-16 mx-auto">
+    <h1 class="text-4xl uppercase text-center mb-10">About Us</h1>
+    <div class="flex flex-col justify-center items-center">
+        
+        <div class="w-1/2">
+            <p class="mt-5 text-lg text-center">
+                We are a team of developers who are passionate about
+                leveraging technology to solve real-world problems. Our
+                mission is to make healthcare more accessible and affordable
+                to everyone. We believe that everyone should have access to
+                quality healthcare regardless of their location or financial
+                status.
+            </p>
+           
+        </div>
+        <h1 class="text-4xl uppercase text-center mt-16 mb-10">The Team</h1>
+        <div class="flex justify-evenly w-full">
+        {% for member in team_members %}
+        <a href="{{ member.link }} " class="flex flex-col justify-center items-center" target="_blank">
+            
+        <div class="flex flex-col justify-center items-center" >
+            <img
+                src="{% static member.img_src %}"
+                alt="{{ member.name }}"
+                class="h-70 w-60 object-cover"
+            />
+            <h2 class="text-xl font-bold mt-5">{{ member.name }}</h2>
+            <p class="text-lg text-center">{{ member.role }}</p>
+            </div>
+        </a>
+        {% endfor %}  
+            </div>
+    </div>
 </div>
 {% endblock %}
