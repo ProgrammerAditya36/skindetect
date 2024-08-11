@@ -1,7 +1,6 @@
+dj_database_url==2.2.0
 Django==3.2.1
 numpy==2.0.1
 Pillow==10.4.0
 pymongo==4.8.0
 Requests==2.32.3
-gunicorn
-whitenoise
