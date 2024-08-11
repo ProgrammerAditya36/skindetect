@@ -82,10 +82,10 @@
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
-    <nav class="bg-gray-100 p-4">
-        <div class="container mx-auto flex justify-between items-center">
+    <nav class="bg-gray-100 p-4 fixed w-full shadow-lg z-50 pr-20">
+        <div class="container mx-auto flex justify-between gap-6 items-center">
             <a href="{% url 'home'  %}" class="text-xl font-bold">
-                <img src="{% static 'images/logo.png' %}" alt="Skin Detect Logo" class="h-20" />
+                <img src="{% static 'images/logo.png' %}" alt="Skin Detect Logo" class="h-16" />
             </a>
             <button class="block md:hidden text-gray-700" id="navbar-toggle">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -93,24 +93,36 @@
                 </svg>
             </button>
             <div class="hidden md:flex space-x-4" id="navbar-menu">
-                <a href="{% url 'home'  %}" class="text-gray-700 hover:text-gray-900">Home</a>
-                <a href="{% url 'about'  %}" class="text-gray-700 hover:text-gray-900">About Us</a>
+                <a href="{% url 'home'  %}" class="text-gray-700 hover:text-gray-900 hover:border-b-2 text-xl hover:border-b-red-500">
+                    Home
+                </a>
+                <a href="{% url 'about'  %}" class="text-gray-700 hover:text-gray-900 hover:border-b-2 text-xl hover:border-b-red-500">
+                    About Us
+                </a>
 
                 {% if user.is_authenticated %}
-                    <a href="{% url 'upload'  %}" class="text-gray-700 hover:text-gray-900">Upload</a>
-                    <a href="{% url 'logout' %}" class="text-gray-700 hover:text-gray-900">Logout</a>
+                    <a href="{% url 'upload'  %}" class="text-gray-700 hover:text-gray-900 hover:border-b-2  text-xlhover:border-b-red-500">
+                        Upload
+                    </a>
+                    <a href="{% url 'logout' %}" class="text-gray-700 hover:text-gray-900 hover:border-b-2 text-xl hover:border-b-red-500">
+                        Logout
+                    </a>
                 {% else %}
-                    <a href="{% url 'register'  %}" class="text-gray-700 hover:text-gray-900">Register</a>
-                    <a href="{% url 'login'  %}" class="text-gray-700 hover:text-gray-900">Login</a>
+                    <a href="{% url 'register' %}" class="text-gray-700 hover:text-gray-900 hover:border-b-2 text-xl hover:border-b-red-500">
+                        Register
+                    </a>
+                    <a href="{% url 'login' %}" class="text-gray-700 hover:text-gray-900 hover:border-b-2 text-xl hover:border-b-red-500">
+                        Login
+                    </a>
                 {% endif %}
             </div>
         </div>
     </nav>
 
-    <main class="flex-grow">
+    <main class="flex-grow mt-20">
         {% block content %}{% endblock %}
-        <div id="chatbot-toggle" style="position: fixed; bottom: 80px; right: 20px;">
-            <img src="{% static 'images/chatbot.png' %}" alt="Chatbot" class="w-16 h-16 cursor-pointer">
+        <div id="chatbot-toggle" style="position: fixed; bottom: 30px; right: 30px;" class="z-50" >
+            <img src="{% static 'images/chatbot.png' %}" alt="Chatbot" class="w-20 h-20 cursor-pointer drop-shadow-lg">
         </div>
         <div id="chatbot">
             <div id="chatbot-header">
