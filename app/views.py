@@ -1,3 +1,4 @@
+
 import os
 import json
 import numpy as np
@@ -6,12 +7,12 @@ from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.http import JsonResponse
-from tensorflow.keras.preprocessing import image  # type: ignore
+from PIL import Image
 import requests
 import logging
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from db_connection import addUser, store_chat_message,chatCollection
+from db_connection import addUser, store_chat_message, chatCollection
 
 logger = logging.getLogger(__name__)
 
@@ -76,11 +77,11 @@ def predict_image(request):
             for chunk in img.chunks():
                 destination.write(chunk)
 
-        # Prepare the image for prediction
-        img_modified = image.load_img(img_path, target_size=(224, 224))
-        img_array = image.img_to_array(img_modified)
+        # Prepare the image for prediction using PIL
+        img_modified = Image.open(img_path).resize((224, 224))
+        img_array = np.array(img_modified)
         img_array = np.expand_dims(img_array, axis=0)
-        img_array /= 255.0
+        img_array = img_array.astype('float32') / 255.0
 
         # Convert image data to list for FastAPI request
         img_data_list = img_array.tolist()
