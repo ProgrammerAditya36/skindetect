@@ -1,0 +1,146 @@
+<!-- templates/app/chat.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Popup</title>
+    <style>
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 100; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .message-box {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f1f1f1;
+        }
+
+        .user-message {
+            text-align: right;
+            background-color: #d9fdd3;
+        }
+
+        .bot-message {
+            text-align: left;
+            background-color: #fdd3d3;
+        }
+
+        #chat-box {
+            max-height: 300px;
+            overflow-y: scroll;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Trigger/Open The Modal -->
+<button id="chatBtn">Open Chat</button>
+
+<!-- The Modal -->
+<div id="chatModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Chat with the Bot</h2>
+
+    <div id="chat-box">
+        {% for chat in past_chats %}
+            <div class="message-box {% if chat.sender == 'bot' %}bot-message{% else %}user-message{% endif %}">
+                <p>{{ chat.message }}</p>
+                <span class="timestamp">{{ chat.timestamp }}</span>
+            </div>
+        {% endfor %}
+    </div>
+
+    <form method="POST" id="chatForm">
+        {% csrf_token %}
+        <input type="text" name="message" id="messageInput" placeholder="Type your message..." required>
+        <button type="submit">Send</button>
+    </form>
+
+    {% if bot_response %}
+        <div class="message-box bot-message">
+            <p>{{ bot_response }}</p>
+        </div>
+    {% endif %}
+
+    {% if error %}
+        <div class="error">
+            <p>{{ error }}</p>
+        </div>
+    {% endif %}
+  </div>
+
+</div>
+
+<script>
+    // Get the modal
+    var modal = document.getElementById("chatModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("chatBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+</body>
+</html>
