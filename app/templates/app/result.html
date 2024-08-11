@@ -10,9 +10,8 @@
     {% if result %}
       <div class="box">
           <h3 class="text-3xl font-bold">Prediction Result:</h3>
-          <h2 class="mb-3">From this image, you might have got</h2>
           <img src="{{ img_path }}" alt="Skin condition image" class="w-full max-w-xs mx-auto mb-3" />
-          <p class="text-lg font-semibold">{{ result }} with a probability {{ probability }}</p>
+          <p class="text-lg font-semibold"> From this image you might have {{ result }} with a probability {{ probability }}</p>
       </div>
       {% if disease %}
         <div class="box p-6 my-3">

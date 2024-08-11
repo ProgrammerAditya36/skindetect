@@ -98,10 +98,10 @@ def predict_image(request):
                 try:
                     result_detect = response_detect.json()
                     detected_disease = result_detect['result']
-                    if(detected_disease == "Benign"):
+                    if(detected_disease not in ["Benign","Malign"]):
                         context['result'] = "No Disease Detected"
                         context['img_path'] = os.path.join(settings.MEDIA_URL, img.name)
-                        context['probability'] = result_detect['probability']
+                        context['probability'] ="{:.4f}".format(result_detect['probability'])
                         return render(request, 'app/result.html', context)
                 except json.JSONDecodeError as e:
                     context['error'] = "Error decoding JSON response from the server."
@@ -113,7 +113,7 @@ def predict_image(request):
                     detected_disease = result['result']
                     context['result'] = detected_disease
                     context['img_path'] = os.path.join(settings.MEDIA_URL, img.name)
-                    context['probability'] = result['probability']
+                    context['probability'] = "{:.4f}".format(result['probability'])
                     for disease in diseases:
                         if disease['name'] == detected_disease:
                             context['disease'] = disease
