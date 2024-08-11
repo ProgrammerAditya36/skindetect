@@ -1,22 +1,24 @@
 import os
 import json
 import numpy as np
+import pymongo
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
-from .forms import CustomUserCreationForm
-from .models import MongoUser
+from django.http import JsonResponse
 from tensorflow.keras.preprocessing import image  # type: ignore
 import requests
 import logging
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from db_connection import addUser
+from db_connection import addUser, store_chat_message,chatCollection
 
 logger = logging.getLogger(__name__)
 
 # Assuming your FastAPI endpoint for prediction
-url = "http://127.0.0.1:5000/predict"
+url_detect = "http://127.0.0.1:5000/detect"
+url_predict = "http://127.0.0.1:5000/predict"
+url_chat = "http://127.0.0.1:5000/chat"
 
 def predict_image(request):
     diseases = [
@@ -90,7 +92,19 @@ def predict_image(request):
 
         # Make prediction request to FastAPI endpoint
         try:
-            response = requests.post(url, json=input_data)
+            response_detect = requests.post(url_detect, json=input_data)
+            if response_detect.status_code == 200:
+                try:
+                    result_detect = response_detect.json()
+                    detected_disease = result_detect['result']
+                    if(detected_disease == "Benign"):
+                        context['result'] = "No Disease Detected"
+                        context['img_path'] = os.path.join(settings.MEDIA_URL, img.name)
+                        context['probability'] = result_detect['probability']
+                        return render(request, 'app/result.html', context)
+                except json.JSONDecodeError as e:
+                    context['error'] = "Error decoding JSON response from the server."
+            response = requests.post(url_predict, json=input_data)
 
             if response.status_code == 200:
                 try:
@@ -146,9 +160,32 @@ def register(request):
             return render(request, 'app/register.html', {'error': 'Registration failed'})
     
     return render(request, 'app/register.html')
+def chat_view(request):
+    if request.method == 'POST':
+        user_message = request.POST.get('message')
+        
+        # Store the user's message in MongoDB
+        store_chat_message(request.user.id, user_message, sender='user')
+        
+        # Send the user's message to the chat API
+        response = requests.post(url_chat, json={"message": user_message})
+        
+        if response.status_code == 200:
+            try:
+                result = response.json()
+                bot_response = result['response']
+                
+                # Store the bot's response in MongoDB
+                store_chat_message(request.user.id, bot_response, sender='bot')
+                
+                return JsonResponse({'bot_response': bot_response})
+            except json.JSONDecodeError:
+                return JsonResponse({'error': "Error decoding JSON response from the server."}, status=500)
+        else:
+            return JsonResponse({'error': f"Error making chat request: {response.status_code}"}, status=500)
 
-
-
+    # For GET requests, you can either return an empty JsonResponse or render the chat template
+    return JsonResponse({})
 def user_login(request):
     if request.method == 'POST':
         email = request.POST['email']

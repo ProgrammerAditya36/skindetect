@@ -13,6 +13,7 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('upload/', views.predict_image, name='upload'),
     path('logout/', views.user_logout, name='logout'),
+    path('chat', views.chat_view, name='chat'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
