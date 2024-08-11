@@ -17,9 +17,10 @@ from db_connection import addUser, store_chat_message, chatCollection
 logger = logging.getLogger(__name__)
 
 # Assuming your FastAPI endpoint for prediction
-url_detect = "http://13.60.190.152:8000/detect"
-url_predict = "http://13.60.190.152:8000//predict"
-url_chat = "http://13.60.190.152:8000//chat"
+main_url = "http://127.0.0.1:5000"
+url_detect = f"{main_url}/detect"
+url_predict = f"{main_url}/predict"
+url_chat = f"{main_url}/chat"
 
 def predict_image(request):
     diseases = [
